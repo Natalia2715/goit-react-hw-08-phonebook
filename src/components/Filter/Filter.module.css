@@ -1,0 +1,15 @@
+.filter {
+  margin-left: 20px;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.filter:focus {
+  outline: none;
+  border-color: rgb(33, 33, 243);
+}
+
+.filter__text {
+  margin-left: 20px;
+}
