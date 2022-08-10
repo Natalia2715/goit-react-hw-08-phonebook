@@ -3,13 +3,19 @@ import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import ContactListElement from './ContactListElement/ContactListElement';
 import Filter from './Filter/Filter';
-import { add, remove, filterItems } from 'redux/store';
+import {
+  add,
+  remove,
+  filterItems,
+  getItemsValue,
+  getFilterValue,
+} from 'redux/contactsSlice';
 
 import { nanoid } from 'nanoid';
 
 export default function App() {
-  const contacts = useSelector(state => state.contacts.items);
-  const filter = useSelector(state => state.contacts.filter);
+  const contacts = useSelector(getItemsValue);
+  const filter = useSelector(getFilterValue);
 
   const dispatch = useDispatch();
 
@@ -36,7 +42,7 @@ export default function App() {
 
   const getVisibleContacts = () => {
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter)
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
