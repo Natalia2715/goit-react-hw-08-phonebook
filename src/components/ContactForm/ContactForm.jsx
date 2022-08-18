@@ -1,26 +1,31 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
-import { add, getItemsValue } from 'redux/contactsSlice';
+
+import {
+  useCreateContactMutation,
+  useFetchContactsQuery,
+} from 'redux/contactsSlice';
+import Loader from 'components/Loader/Loader';
 import styles from './ContactForm.module.css';
+import toast from 'react-hot-toast';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const contacts = useSelector(getItemsValue);
-  const dispatch = useDispatch();
+  const [createContact, { isLoading }] = useCreateContactMutation();
+  const { data: contacts } = useFetchContactsQuery();
 
   const addContact = (name, number) => {
-    const contact = { id: nanoid(), name, number };
+    const contact = { name, phone: number };
     const names = [];
     contacts.map(item => {
       return names.push(item.name.toLowerCase());
     });
     if (names.includes(contact.name.toLowerCase())) {
-      return alert('This contact already exists!');
+      return toast('This contact already exists!');
     } else {
-      dispatch(add(contact));
+      createContact(contact);
+      toast.success('Contact is added!');
     }
   };
 
@@ -40,7 +45,6 @@ export default function ContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     addContact(name, number);
     setName('');
     setNumber('');
@@ -74,8 +78,8 @@ export default function ContactForm() {
           required
         />
       </label>
-      <button className={styles.form__btn} type="submit">
-        Add contact
+      <button className={styles.form__btn} type="submit" disabled={isLoading}>
+        {isLoading ? <Loader /> : 'Add contact'}
       </button>
     </form>
   );

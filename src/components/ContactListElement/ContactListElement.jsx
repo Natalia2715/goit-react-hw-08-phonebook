@@ -1,26 +1,31 @@
 import styles from './ContactListElement.module.css';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { remove } from 'redux/contactsSlice';
+import toast, { Toaster } from 'react-hot-toast';
+import Loader from '../Loader/Loader';
+import { useDeleteContactMutation } from 'redux/contactsSlice';
 
 export default function ContactListElement({ item }) {
-  const { id, name, number } = item;
-  const dispatch = useDispatch();
+  const { id, name, phone } = item;
+
+  const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
 
   return (
     <li className={styles.contact__item}>
       <p className={styles.contact__name}>
-        {name}: {number}
+        {name}: {phone}
       </p>
       <button
         className={styles.contact__button}
         type="button"
+        disabled={isDeleting}
         onClick={() => {
-          dispatch(remove(id));
+          deleteContact(id);
+          toast.success('Contact is deleted!');
         }}
       >
-        Delete
+        {isDeleting ? <Loader size={12} /> : 'Delete'}
       </button>
+      <Toaster />
     </li>
   );
 }
@@ -29,6 +34,6 @@ ContactListElement.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }),
 };
