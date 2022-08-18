@@ -5,7 +5,7 @@ import { useFetchContactsQuery } from 'redux/contactsSlice';
 import Loader from 'components/Loader/Loader.jsx';
 
 export default function ContactList() {
-  const { data, isFetching } = useFetchContactsQuery();
+  const { data, isFetching, error } = useFetchContactsQuery();
 
   const filter = useSelector(getFilterValue);
 
@@ -33,6 +33,7 @@ export default function ContactList() {
           )}
         </ul>
       )}
+      {error && <p>Something went wrong!</p>}
     </>
   );
 }
