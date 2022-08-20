@@ -3,11 +3,19 @@ import PropTypes from 'prop-types';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader/Loader';
 import { useDeleteContactMutation } from 'redux/contactsSlice';
+import { useEffect } from 'react';
 
 export default function ContactListElement({ item }) {
   const { id, name, phone } = item;
 
-  const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
+  const [deleteContact, { isLoading: isDeleting, isSuccess }] =
+    useDeleteContactMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Contact is deleted!');
+    }
+  }, [isSuccess]);
 
   return (
     <li className={styles.contact__item}>
@@ -20,7 +28,7 @@ export default function ContactListElement({ item }) {
         disabled={isDeleting}
         onClick={() => {
           deleteContact(id);
-          toast.success('Contact is deleted!');
+          // toast.success('Contact is deleted!');
         }}
       >
         {isDeleting ? <Loader size={12} /> : 'Delete'}

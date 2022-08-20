@@ -5,7 +5,7 @@ import { useFetchContactsQuery } from 'redux/contactsSlice';
 import Loader from 'components/Loader/Loader.jsx';
 
 export default function ContactList() {
-  const { data, isFetching, error } = useFetchContactsQuery();
+  const { data, isLoading, error } = useFetchContactsQuery();
 
   const filter = useSelector(getFilterValue);
 
@@ -21,7 +21,7 @@ export default function ContactList() {
 
   return (
     <>
-      {isFetching && <Loader />}
+      {isLoading && <Loader />}
       {data && (
         <ul>
           {visibleContacts.length !== 0 ? (

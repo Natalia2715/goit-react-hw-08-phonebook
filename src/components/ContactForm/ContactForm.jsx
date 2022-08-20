@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   useCreateContactMutation,
@@ -12,7 +12,7 @@ export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const [createContact, { isLoading }] = useCreateContactMutation();
+  const [createContact, { isLoading, isSuccess }] = useCreateContactMutation();
   const { data: contacts } = useFetchContactsQuery();
 
   const addContact = (name, number) => {
@@ -25,9 +25,16 @@ export default function ContactForm() {
       return toast('This contact already exists!');
     } else {
       createContact(contact);
-      toast.success('Contact is added!');
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Contact is added!');
+      setName('');
+      setNumber('');
+    }
+  }, [isSuccess]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -46,8 +53,6 @@ export default function ContactForm() {
   const handleSubmit = e => {
     e.preventDefault();
     addContact(name, number);
-    setName('');
-    setNumber('');
   };
 
   return (
