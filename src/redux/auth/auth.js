@@ -28,8 +28,12 @@ export const authSlice = createSlice({
         (state, { payload }) => {
           state.name = payload.name;
           state.email = payload.email;
+          state.isLoggedIn = true;
         }
       )
+      .addMatcher(authApi.endpoints.currentUser.matchRejected, state => {
+        state = initialState;
+      })
       .addMatcher(
         authApi.endpoints.signUp.matchFulfilled,
         (state, { payload }) => {

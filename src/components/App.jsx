@@ -15,6 +15,7 @@ const ContactsView = lazy(() => import('../pages/ContactsView/ContactsView'));
 
 export default function App() {
   const { token } = useSelector(state => state.auth);
+
   useCurrentUserQuery(undefined, {
     skip: !token,
   });
