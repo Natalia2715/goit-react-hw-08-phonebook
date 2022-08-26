@@ -63,7 +63,6 @@ export default function AlertDialogSlide() {
             vertical: 'top',
             horizontal: 'left',
           }}
-          onClose={handlePopoverClose}
           disableRestoreFocus
         >
           <Typography sx={{ p: 1 }}>Add new Contact</Typography>
@@ -73,8 +72,8 @@ export default function AlertDialogSlide() {
         <Dialog
           open={open}
           TransitionComponent={Transition}
-          keepMounted
           onClose={handleClose}
+          sx={{ overflowY: 'hidden' }}
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle>{'AddContact'}</DialogTitle>

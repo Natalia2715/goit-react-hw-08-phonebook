@@ -5,7 +5,7 @@ import {
   useFetchContactsQuery,
 } from 'redux/contactsSlice';
 import Loader from 'components/Loader/Loader';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { Button, Form, Input, Label } from './ContactForm.styled';
 
 export default function ContactForm({ onClose }) {
@@ -30,12 +30,14 @@ export default function ContactForm({ onClose }) {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Contact is added!');
+      toast.success('Contact is added!', {
+        id: 'success',
+      });
       setName('');
       setNumber('');
       onClose();
     }
-  }, [isSuccess]);
+  }, [isSuccess, onClose]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -85,6 +87,9 @@ export default function ContactForm({ onClose }) {
       <Button type="submit" disabled={isLoading}>
         {isLoading ? <Loader /> : 'Add contact'}
       </Button>
+      <div>
+        <Toaster />
+      </div>
     </Form>
   );
 }
