@@ -23,8 +23,8 @@ export const authApi = createApi({
     currentUser: builder.query({
       query: () => ({
         url: '/current',
+        invalidatesTags: ['User'],
       }),
-      invalidatesTags: ['User'],
     }),
     signUp: builder.mutation({
       query: payload => ({
