@@ -3,6 +3,7 @@ import { getFilterValue } from 'redux/filterSlice';
 import ContactListElement from '../ContactListElement/ContactListElement.jsx';
 import { useFetchContactsQuery } from 'redux/contactsSlice';
 import Loader from 'components/Loader/Loader.jsx';
+import List from '@mui/material/List';
 
 export default function ContactList() {
   const { data, isLoading, error } = useFetchContactsQuery();
@@ -23,7 +24,9 @@ export default function ContactList() {
     <>
       {isLoading && <Loader />}
       {data && (
-        <ul>
+        <List
+          sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        >
           {visibleContacts.length !== 0 ? (
             visibleContacts.map(item => (
               <ContactListElement key={item.id} item={item} />
@@ -31,7 +34,7 @@ export default function ContactList() {
           ) : (
             <li> Contact {filter} not found </li>
           )}
-        </ul>
+        </List>
       )}
       {error && <p>Something went wrong!</p>}
     </>

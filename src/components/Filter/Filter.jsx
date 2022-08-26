@@ -1,6 +1,7 @@
-import styles from './Filter.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterItems, getFilterValue } from 'redux/filterSlice';
+import { InputAdornment, TextField } from '@mui/material';
+import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 
 export default function Filter() {
   const filter = useSelector(getFilterValue);
@@ -12,8 +13,20 @@ export default function Filter() {
 
   return (
     <div>
-      <p className={styles.filter__text}>Find contacts by name</p>
-      <input className={styles.filter} onChange={changeFilter} value={filter} />
+      <TextField
+        value={filter}
+        onChange={changeFilter}
+        label="Find contacts by name"
+        variant="filled"
+        sx={{ width: 400 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <AddIcCallIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
     </div>
   );
 }

@@ -5,10 +5,10 @@ import {
   useFetchContactsQuery,
 } from 'redux/contactsSlice';
 import Loader from 'components/Loader/Loader';
-import styles from './ContactForm.module.css';
 import toast from 'react-hot-toast';
+import { Button, Form, Input, Label } from './ContactForm.styled';
 
-export default function ContactForm() {
+export default function ContactForm({ onClose }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -16,7 +16,7 @@ export default function ContactForm() {
   const { data: contacts } = useFetchContactsQuery();
 
   const addContact = (name, number) => {
-    const contact = { name, phone: number };
+    const contact = { name, number };
     const names = [];
     contacts.map(item => {
       return names.push(item.name.toLowerCase());
@@ -33,8 +33,9 @@ export default function ContactForm() {
       toast.success('Contact is added!');
       setName('');
       setNumber('');
+      onClose();
     }
-  }, [isSuccess]);
+  }, [isSuccess, onClose]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -56,11 +57,10 @@ export default function ContactForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <label className={styles.form__label}>
+    <Form onSubmit={handleSubmit}>
+      <Label>
         Name
-        <input
-          className={styles.form__input}
+        <Input
           onChange={handleChange}
           type="text"
           name="name"
@@ -69,11 +69,10 @@ export default function ContactForm() {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
         />
-      </label>
-      <label className={styles.form__label}>
+      </Label>
+      <Label>
         Number
-        <input
-          className={styles.form__input}
+        <Input
           onChange={handleChange}
           type="tel"
           name="number"
@@ -82,10 +81,10 @@ export default function ContactForm() {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
         />
-      </label>
-      <button className={styles.form__btn} type="submit" disabled={isLoading}>
+      </Label>
+      <Button type="submit" disabled={isLoading}>
         {isLoading ? <Loader /> : 'Add contact'}
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 }

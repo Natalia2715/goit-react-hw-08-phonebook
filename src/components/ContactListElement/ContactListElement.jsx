@@ -1,12 +1,16 @@
-import styles from './ContactListElement.module.css';
 import PropTypes from 'prop-types';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '../Loader/Loader';
 import { useDeleteContactMutation } from 'redux/contactsSlice';
 import { useEffect } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { Name, Number } from './ContactListElement.styled';
 
 export default function ContactListElement({ item }) {
-  const { id, name, phone } = item;
+  const { id, name, number } = item;
 
   const [deleteContact, { isLoading: isDeleting, isSuccess }] =
     useDeleteContactMutation();
@@ -18,23 +22,26 @@ export default function ContactListElement({ item }) {
   }, [isSuccess]);
 
   return (
-    <li className={styles.contact__item}>
-      <p className={styles.contact__name}>
-        {name}: {phone}
-      </p>
-      <button
-        className={styles.contact__button}
-        type="button"
-        disabled={isDeleting}
-        onClick={() => {
-          deleteContact(id);
-          // toast.success('Contact is deleted!');
-        }}
-      >
-        {isDeleting ? <Loader size={12} /> : 'Delete'}
-      </button>
+    <ListItem
+      secondaryAction={
+        <IconButton
+          type="button"
+          disabled={isDeleting}
+          onClick={() => {
+            deleteContact(id);
+          }}
+        >
+          {isDeleting ? <Loader size={12} /> : <DeleteIcon />}
+        </IconButton>
+      }
+    >
+      <ListItemText
+        primary={<Name>{name} </Name>}
+        secondary={<Number>{number}</Number>}
+        sx={{ fontSize: '2rem' }}
+      />
       <Toaster />
-    </li>
+    </ListItem>
   );
 }
 
@@ -42,6 +49,6 @@ ContactListElement.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
   }),
 };

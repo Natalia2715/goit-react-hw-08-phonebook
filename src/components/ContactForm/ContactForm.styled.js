@@ -1,22 +1,26 @@
-.form {
+import styled from 'styled-components';
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  border-radius: 8px;
+
   width: 300px;
   padding: 20px;
   margin-left: 20px;
-}
-
-.form__label {
+`;
+export const Label = styled.label`
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
   font-size: 20px;
   font-weight: 700;
-}
-
-.form__btn {
+`;
+export const Button = styled.button`
   width: 120px;
   padding: 10px 15px;
   background-image: linear-gradient(
@@ -28,18 +32,15 @@
   border-color: transparent;
   cursor: pointer;
   transition: transform 250ms linear;
-}
-
-.form__btn:hover {
-  transform: scale(0.8);
-}
-
-.form__input {
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+export const Input = styled.input`
   padding: 8px;
   font-size: 16px;
-}
-
-.form__input:focus {
-  outline: none;
-  border-color: rgb(33, 33, 243);
-}
+  &:focus {
+    outline: none;
+    border-color: rgb(33, 33, 243);
+  }
+`;
