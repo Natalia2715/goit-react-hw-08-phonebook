@@ -35,7 +35,7 @@ export default function ContactForm({ onClose }) {
       setNumber('');
       onClose();
     }
-  }, [isSuccess, onClose]);
+  }, [isSuccess]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
