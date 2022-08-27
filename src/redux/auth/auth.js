@@ -12,28 +12,34 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   extraReducers: builder => {
+    builder.addMatcher(
+      authApi.endpoints.logIn.matchFulfilled,
+      (state, { payload }) => {
+        const { user, token } = payload;
+        state.name = user.name;
+        state.email = user.email;
+        state.token = token;
+        state.isLoggedIn = true;
+      }
+    );
+    builder.addMatcher(
+      authApi.endpoints.currentUser.matchFulfilled,
+      (state, { payload }) => {
+        state.name = payload.name;
+        state.email = payload.email;
+        state.isLoggedIn = true;
+      }
+    );
     builder
       .addMatcher(
-        authApi.endpoints.logIn.matchFulfilled,
+        authApi.endpoints.currentUser.matchRejected,
         (state, { payload }) => {
-          const { user, token } = payload;
-          state.name = user.name;
-          state.email = user.email;
-          state.token = token;
-          state.isLoggedIn = true;
+          if (payload.status === 401) {
+            state.token = '';
+            state.isLoggedIn = false;
+          }
         }
       )
-      .addMatcher(
-        authApi.endpoints.currentUser.matchFulfilled,
-        (state, { payload }) => {
-          state.name = payload.name;
-          state.email = payload.email;
-          state.isLoggedIn = true;
-        }
-      )
-      .addMatcher(authApi.endpoints.currentUser.matchRejected, state => {
-        state = initialState;
-      })
       .addMatcher(
         authApi.endpoints.signUp.matchFulfilled,
         (state, { payload }) => {
@@ -47,10 +53,10 @@ export const authSlice = createSlice({
       .addMatcher(
         authApi.endpoints.logOut.matchFulfilled,
         (state, { payload }) => {
-          const { token } = payload;
+          console.log(payload);
           state.name = null;
           state.email = null;
-          state.token = token;
+          state.token = null;
           state.isLoggedIn = false;
         }
       );
