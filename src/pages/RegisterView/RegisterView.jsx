@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSignUpMutation } from 'redux/auth/authApi';
 import { TextField, InputAdornment, Button, Stack } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import MailIcon from '@mui/icons-material/Mail';
 import { FormContainer, Form, Title } from './RegisterView.styled';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function RegisterView() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [register] = useSignUpMutation();
+  const [register, { isSuccess, error }] = useSignUpMutation();
 
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
@@ -26,13 +27,20 @@ export default function RegisterView() {
     }
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      setName('');
+      setEmail('');
+      setPassword('');
+    } else if (error) {
+      toast.error('Please, try again!');
+    }
+  }, [error, isSuccess]);
+
   const handleSubmit = e => {
     e.preventDefault();
     const credentials = { name, email, password };
     register(credentials);
-    setName('');
-    setEmail('');
-    setPassword('');
   };
 
   return (
@@ -101,6 +109,7 @@ export default function RegisterView() {
           </Button>
         </Stack>
       </Form>
+      <Toaster />
     </FormContainer>
   );
 }

@@ -34,7 +34,7 @@ export const authSlice = createSlice({
       .addMatcher(
         authApi.endpoints.currentUser.matchRejected,
         (state, { payload }) => {
-          if (payload.status === 401) {
+          if (payload && payload.status === 401) {
             state.token = '';
             state.isLoggedIn = false;
           }
@@ -53,7 +53,6 @@ export const authSlice = createSlice({
       .addMatcher(
         authApi.endpoints.logOut.matchFulfilled,
         (state, { payload }) => {
-          console.log(payload);
           state.name = null;
           state.email = null;
           state.token = null;

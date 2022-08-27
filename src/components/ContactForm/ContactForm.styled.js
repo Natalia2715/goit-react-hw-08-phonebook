@@ -44,3 +44,8 @@ export const Input = styled.input`
     border-color: rgb(33, 33, 243);
   }
 `;
+
+export const TitleBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

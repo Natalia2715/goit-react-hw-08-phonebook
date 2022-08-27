@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AppContainer from './Container/Container';
 import Appbar from './AppBar/AppBar';
 import { useCurrentUserQuery } from 'redux/auth/authApi';
@@ -43,6 +43,7 @@ export default function App() {
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/contacts" element={<ContactsView />} />
           </Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AppContainer>
     </Suspense>

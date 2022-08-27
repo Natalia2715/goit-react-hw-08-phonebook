@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLogInMutation } from 'redux/auth/authApi';
 import { TextField, InputAdornment, Button, Stack } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import MailIcon from '@mui/icons-material/Mail';
 import { FormContainer, Form, Title } from './LoginView.styled';
+import toast, { Toaster } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export default function LoginView() {
-  const [login] = useLogInMutation();
+  const [login, { isSuccess, error }] = useLogInMutation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,13 +22,19 @@ export default function LoginView() {
         return;
     }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      setEmail('');
+      setPassword('');
+    } else if (error) {
+      toast.error('Please, try again!');
+    }
+  }, [error, isSuccess]);
 
   const handleSubmit = e => {
     e.preventDefault();
     const credentials = { email, password };
     login(credentials);
-    setEmail('');
-    setPassword('');
   };
   return (
     <FormContainer>
@@ -79,6 +87,10 @@ export default function LoginView() {
           </Button>
         </Stack>
       </Form>
+      <Button variant="contained" sx={{ fontWeight: 600, marginTop: '15px' }}>
+        <Link to="/register">Create an account</Link>
+      </Button>
+      <Toaster />
     </FormContainer>
   );
 }

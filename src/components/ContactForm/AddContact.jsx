@@ -5,6 +5,7 @@ import Slide from '@mui/material/Slide';
 import { Container } from './ContactForm.styled';
 import { IconButton, Popover, Typography } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import CloseIcon from '@mui/icons-material/Close';
 import { forwardRef, useState } from 'react';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -72,10 +73,18 @@ export default function AlertDialogSlide() {
         <Dialog
           open={open}
           TransitionComponent={Transition}
-          onClose={handleClose}
+          // onClose={handleClose}
           sx={{ overflowY: 'hidden' }}
           aria-describedby="alert-dialog-slide-description"
         >
+          <IconButton
+            variant="outlined"
+            onClick={handleClose}
+            sx={{ marginLeft: 'auto' }}
+          >
+            <CloseIcon />
+          </IconButton>
+
           <DialogTitle>{'AddContact'}</DialogTitle>
           <ContactForm onClose={handleClose} />
         </Dialog>
